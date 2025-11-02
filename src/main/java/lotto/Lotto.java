@@ -21,16 +21,16 @@ public class Lotto {
             throw new IllegalArgumentException("[ERROR] 로또 번호에는 중복이 없어야 합니다.");
         }
     }
-
-    public void printNumbers() {
-        System.out.println(numbers);
-    }
-
     public long countMatches(Set<Integer> winning) {
         return numbers.stream().filter(winning::contains).count();
     }
 
     public boolean contains(int bonus) {
         return numbers.contains(bonus);
+    }
+
+    @Override
+    public String toString() {
+        return numbers.toString();
     }
 }

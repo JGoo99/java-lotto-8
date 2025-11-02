@@ -28,11 +28,9 @@ public class Application {
 
         List<Lotto> tickets = new ArrayList<>();
         for (int i = 0; i < ticketCount; i++) {
-            List<Integer> nums = Randoms.pickUniqueNumbersInRange(1, 45, 6)
-                .stream().sorted().collect(Collectors.toList());
-            Lotto t = new Lotto(nums);
-            tickets.add(t);
-            t.printNumbers();
+            Lotto lotto = LottoGenerator.generate();
+            tickets.add(LottoGenerator.generate());
+            System.out.println(lotto);
         }
 
         System.out.println();
