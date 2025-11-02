@@ -15,7 +15,7 @@
 ### 설계/품질
 - [x] JDK 21, Application.main() 시작
 - [x] camp.nextstep.edu.missionutils.Randoms/Console 사용
-- [ ] indent depth ≤ 2, else/switch 금지 (조기 return)
-- [ ] 메서드 길이 ≤ 15라인
+- [x] indent depth ≤ 2, else/switch 금지 (조기 return)
+- [x] 메서드 길이 ≤ 15라인
 - [x] Enum 활용 (등수/상금)
 - [x] UI 로직 제외 단위 테스트 (JUnit5, AssertJ)
