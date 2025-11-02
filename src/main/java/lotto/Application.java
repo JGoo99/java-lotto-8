@@ -3,8 +3,10 @@ package lotto;
 import camp.nextstep.edu.missionutils.Console;
 import camp.nextstep.edu.missionutils.Randoms;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -38,6 +40,27 @@ public class Application {
 
         System.out.println();
         int bonus = readBonusNumber(winning);
+
+        Map<Rank, Integer> counts = new EnumMap<>(Rank.class);
+        for (Rank r : Rank.values()) {
+            counts.put(r, 0);
+        }
+
+        long totalPrize = 0;
+        Set<Integer> winSet = new HashSet<>(winning);
+        for (Lotto t : tickets) {
+            int matched = 0;
+            for (int n : t.getNumbers()) {
+                if (winSet.contains(n)) {
+                    matched++;
+                }
+            }
+            boolean bonusMatched = t.getNumbers().contains(bonus);
+            Rank rank = Rank.of(matched, bonusMatched);
+            counts.put(rank, counts.get(rank) + 1);
+            totalPrize += rank.prize();
+        }
+        System.out.println(counts);
     }
 
     private int readPurchaseAmount() {
