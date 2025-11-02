@@ -1,7 +1,6 @@
 package lotto;
 
 import camp.nextstep.edu.missionutils.Console;
-import camp.nextstep.edu.missionutils.Randoms;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashSet;
@@ -20,23 +19,15 @@ public class Application {
     }
 
     void run() {
+        OutputView out = new OutputView();
+
         int amount = readPurchaseAmount();
         int ticketCount = amount / 1000;
 
-        System.out.println();
-        System.out.printf("%d개를 구매했습니다.%n", ticketCount);
+        List<Lotto> tickets = buy(ticketCount);
+        out.printTickets(ticketCount, tickets);
 
-        List<Lotto> tickets = new ArrayList<>();
-        for (int i = 0; i < ticketCount; i++) {
-            Lotto lotto = LottoGenerator.generate();
-            tickets.add(LottoGenerator.generate());
-            System.out.println(lotto);
-        }
-
-        System.out.println();
         List<Integer> winning = readWinningNumbers();
-
-        System.out.println();
         int bonus = readBonusNumber(winning);
 
         Map<Rank, Integer> counts = new EnumMap<>(Rank.class);
@@ -66,6 +57,14 @@ public class Application {
 
         double rate = (totalPrize * 100.0) / amount;
         System.out.printf("총 수익률은 %.1f%%입니다.%n", Math.round(rate * 10) / 10.0);
+    }
+
+    private static List<Lotto> buy(int ticketCount) {
+        List<Lotto> tickets = new ArrayList<>(ticketCount);
+        for (int i = 0; i < ticketCount; i++) {
+            tickets.add(LottoGenerator.generate());
+        }
+        return tickets;
     }
 
     private int readPurchaseAmount() {
@@ -104,7 +103,7 @@ public class Application {
     }
 
     private List<Integer> readWinningNumbers() {
-        System.out.println("당첨 번호를 입력해 주세요.");
+        System.out.println("\n당첨 번호를 입력해 주세요.");
         while (true) {
             try {
                 String s = Console.readLine();
@@ -146,7 +145,7 @@ public class Application {
     }
 
     private int readBonusNumber(List<Integer> winning) {
-        System.out.println("보너스 번호를 입력해 주세요.");
+        System.out.println("\n보너스 번호를 입력해 주세요.");
         while (true) {
             try {
                 String s = Console.readLine();
