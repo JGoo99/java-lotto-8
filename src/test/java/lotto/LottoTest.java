@@ -42,4 +42,14 @@ class LottoTest {
         // when (0개 일치) // then
         assertThat(lotto.countMatches(Set.of(10, 20, 30, 40, 41, 42))).isEqualTo(0);
     }
+
+    @Test
+    @DisplayName("보너스 번호 포함 여부를 반환한다")
+    void 보너스_번호_포함_여부를_반환한다() {
+        // given
+        Lotto lotto = new Lotto(List.of(10, 20, 30, 40, 41, 42));
+        // when // then
+        assertThat(lotto.contains(10)).isTrue();
+        assertThat(lotto.contains(11)).isFalse();
+    }
 }

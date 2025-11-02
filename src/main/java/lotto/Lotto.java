@@ -33,4 +33,8 @@ public class Lotto {
     public long countMatches(Set<Integer> winning) {
         return numbers.stream().filter(winning::contains).count();
     }
+
+    public boolean contains(int bonus) {
+        return numbers.contains(bonus);
+    }
 }
