@@ -1,6 +1,11 @@
 package lotto;
 
 import camp.nextstep.edu.missionutils.Console;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Application {
     public static void main(String[] args) {
@@ -17,6 +22,9 @@ public class Application {
 
         System.out.println();
         System.out.printf("%d개를 구매했습니다.%n", ticketCount);
+
+        System.out.println();
+        List<Integer> winning = readWinningNumbers();
     }
 
     private int readPurchaseAmount() {
@@ -53,4 +61,44 @@ public class Application {
     interface SupplierWithEx<T> {
         T get();
     }
+
+    private List<Integer> readWinningNumbers() {
+        System.out.println("당첨 번호를 입력해 주세요.");
+        while (true) {
+            try {
+                String s = Console.readLine();
+                List<Integer> nums = parseCommaNumbers(s);
+                if (nums.size() != 6) {
+                    throw new IllegalArgumentException("[ERROR] 당첨 번호는 6개여야 합니다.");
+                }
+                validateRangeAndDup(nums);
+                return nums.stream().sorted().collect(Collectors.toList());
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    private static List<Integer> parseCommaNumbers(String s) {
+        String[] parts = s.split(",", -1);
+        List<Integer> out = new ArrayList<>();
+        for (String p : parts) out.add(parseIntStrict(p));
+        return out;
+    }
+
+    private static void validateRangeAndDup(List<Integer> nums) {
+        Set<Integer> set = new HashSet<>(nums);
+        if (set.size() != nums.size()) {
+            throw new IllegalArgumentException("[ERROR] 중복 없는 번호를 입력해 주세요.");
+        }
+        for (int n : nums) validateRange(n);
+    }
+
+    private static void validateRange(int n) {
+        if (n < 1 || n > 45) {
+            throw new IllegalArgumentException("[ERROR] 로또 번호는 1부터 45 사이의 숫자여야 합니다.");
+        }
+    }
+
+
 }

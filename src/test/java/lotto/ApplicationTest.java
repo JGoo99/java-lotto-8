@@ -62,7 +62,7 @@ class ApplicationTest extends NsTest {
     void 금액_천단위_예외_후_재입력() {
         assertSimpleTest(
             () -> {
-                run("1400", "2000");
+                run("1400", "2000", "1,2,3,4,5,6", "7");
                 assertThat(output()).contains(ERROR_MESSAGE);
             }
         );
@@ -73,11 +73,36 @@ class ApplicationTest extends NsTest {
     void 금액_천단위_예외_후_재입력_및_구매_개수_출력() {
         assertSimpleTest(
             () -> {
-                run("1400", "2000");
+                run("1400", "2000", "1,2,3,4,5,6", "7");
                 assertThat(output()).contains(ERROR_MESSAGE, "2개를 구매했습니다.");
             }
         );
     }
+
+    @Test
+    @DisplayName("당첨 번호가 6개가 아니면 재입력 유도")
+    void 당첨번호_개수_오류_후_재입력() {
+        assertRandomUniqueNumbersInRangeTest(
+            () -> {
+                run("1000", "1,2,3", "1,2,3,4,5,6", "7");
+                assertThat(output()).contains(ERROR_MESSAGE);
+            },
+            List.of(1, 2, 3, 4, 5, 6)
+        );
+    }
+
+    @Test
+    @DisplayName("당첨 번호에 범위(1~45) 밖의 수가 있으면 재입력 유도")
+    void 당첨번호_범위_오류_후_재입력() {
+        assertRandomUniqueNumbersInRangeTest(
+            () -> {
+                run("1000", "0,2,3,4,5,6", "1,2,3,4,5,6", "7");
+                assertThat(output()).contains(ERROR_MESSAGE);
+            },
+            List.of(10, 11, 12, 13, 14, 15)
+        );
+    }
+
 
     @Override
     public void runMain() {
