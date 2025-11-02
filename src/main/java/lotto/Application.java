@@ -85,7 +85,9 @@ public class Application {
     private static List<Integer> parseCommaNumbers(String s) {
         String[] parts = s.split(",", -1);
         List<Integer> out = new ArrayList<>();
-        for (String p : parts) out.add(parseIntStrict(p));
+        for (String p : parts) {
+            out.add(parseIntStrict(p));
+        }
         return out;
     }
 
@@ -94,7 +96,9 @@ public class Application {
         if (set.size() != nums.size()) {
             throw new IllegalArgumentException("[ERROR] 중복 없는 번호를 입력해 주세요.");
         }
-        for (int n : nums) validateRange(n);
+        for (int n : nums) {
+            validateRange(n);
+        }
     }
 
     private static void validateRange(int n) {
