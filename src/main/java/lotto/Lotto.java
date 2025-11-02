@@ -21,4 +21,8 @@ public class Lotto {
             throw new IllegalArgumentException("[ERROR] 로또 번호에는 중복이 없어야 합니다.");
         }
     }
+
+    public void printNumbers() {
+        System.out.println(numbers);
+    }
 }

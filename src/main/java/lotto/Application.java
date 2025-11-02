@@ -1,6 +1,7 @@
 package lotto;
 
 import camp.nextstep.edu.missionutils.Console;
+import camp.nextstep.edu.missionutils.Randoms;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -22,6 +23,15 @@ public class Application {
 
         System.out.println();
         System.out.printf("%d개를 구매했습니다.%n", ticketCount);
+
+        List<Lotto> tickets = new ArrayList<>();
+        for (int i = 0; i < ticketCount; i++) {
+            List<Integer> nums = Randoms.pickUniqueNumbersInRange(1, 45, 6)
+                .stream().sorted().collect(Collectors.toList());
+            Lotto t = new Lotto(nums);
+            tickets.add(t);
+            t.printNumbers();
+        }
 
         System.out.println();
         List<Integer> winning = readWinningNumbers();
