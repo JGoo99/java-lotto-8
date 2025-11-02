@@ -29,4 +29,8 @@ public class Lotto {
     public void printNumbers() {
         System.out.println(numbers);
     }
+
+    public long countMatches(Set<Integer> winning) {
+        return numbers.stream().filter(winning::contains).count();
+    }
 }
