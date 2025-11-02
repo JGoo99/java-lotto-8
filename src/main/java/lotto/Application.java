@@ -49,14 +49,10 @@ public class Application {
         long totalPrize = 0;
         Set<Integer> winSet = new HashSet<>(winning);
         for (Lotto t : tickets) {
-            int matched = 0;
-            for (int n : t.getNumbers()) {
-                if (winSet.contains(n)) {
-                    matched++;
-                }
-            }
-            boolean bonusMatched = t.getNumbers().contains(bonus);
-            Rank rank = Rank.of(matched, bonusMatched);
+            long matched = t.countMatches(winSet);
+            boolean bonusMatched = t.contains(bonus);
+
+            Rank rank = Rank.of((int) matched, bonusMatched);
             counts.put(rank, counts.get(rank) + 1);
             totalPrize += rank.prize();
         }
