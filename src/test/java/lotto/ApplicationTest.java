@@ -68,6 +68,17 @@ class ApplicationTest extends NsTest {
         );
     }
 
+    @Test
+    @DisplayName("금액이 1,000원 단위가 아니면 재입력을 요구하고 구매 개수를 출력한다")
+    void 금액_천단위_예외_후_재입력_및_구매_개수_출력() {
+        assertSimpleTest(
+            () -> {
+                run("1400", "2000");
+                assertThat(output()).contains(ERROR_MESSAGE, "2개를 구매했습니다.");
+            }
+        );
+    }
+
     @Override
     public void runMain() {
         Application.main(new String[]{});

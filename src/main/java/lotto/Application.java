@@ -13,6 +13,10 @@ public class Application {
 
     void run() {
         int amount = readPurchaseAmount();
+        int ticketCount = amount / 1000;
+
+        System.out.println();
+        System.out.printf("%d개를 구매했습니다.%n", ticketCount);
     }
 
     private int readPurchaseAmount() {
