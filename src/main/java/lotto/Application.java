@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class Application {
     public static void main(String[] args) {
@@ -19,16 +18,17 @@ public class Application {
     }
 
     void run() {
+        InputView in = new InputView();
         OutputView out = new OutputView();
 
-        int amount = readPurchaseAmount();
+        int amount = in.readPurchaseAmount();
         int ticketCount = amount / 1000;
 
         List<Lotto> tickets = buy(ticketCount);
         out.printTickets(ticketCount, tickets);
 
-        List<Integer> winning = readWinningNumbers();
-        int bonus = readBonusNumber(winning);
+        List<Integer> winning = in.readWinningNumbers();
+        int bonus = in.readBonusNumber(winning);
 
         Map<Rank, Integer> counts = new EnumMap<>(Rank.class);
         for (Rank r : Rank.values()) {
@@ -65,99 +65,5 @@ public class Application {
             tickets.add(LottoGenerator.generate());
         }
         return tickets;
-    }
-
-    private int readPurchaseAmount() {
-        System.out.println("구입금액을 입력해 주세요.");
-        return retry(() -> {
-            String s = Console.readLine();
-            int money = parseIntStrict(s);
-            if (money <= 0 || money % 1000 != 0) {
-                throw new IllegalArgumentException("[ERROR] 구입 금액은 1,000원 단위의 양수여야 합니다.");
-            }
-            return money;
-        });
-    }
-
-    private <T> T retry(SupplierWithEx<T> sup) {
-        while (true) {
-            try {
-                return sup.get();
-            } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-    }
-
-    private static int parseIntStrict(String s) {
-        try {
-            return Integer.parseInt(s.trim());
-        } catch (Exception e) {
-            throw new IllegalArgumentException("[ERROR] 숫자를 입력해 주세요.");
-        }
-    }
-
-    @FunctionalInterface
-    interface SupplierWithEx<T> {
-        T get();
-    }
-
-    private List<Integer> readWinningNumbers() {
-        System.out.println("\n당첨 번호를 입력해 주세요.");
-        while (true) {
-            try {
-                String s = Console.readLine();
-                List<Integer> nums = parseCommaNumbers(s);
-                if (nums.size() != 6) {
-                    throw new IllegalArgumentException("[ERROR] 당첨 번호는 6개여야 합니다.");
-                }
-                validateRangeAndDup(nums);
-                return nums.stream().sorted().collect(Collectors.toList());
-            } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-    }
-
-    private static List<Integer> parseCommaNumbers(String s) {
-        String[] parts = s.split(",", -1);
-        List<Integer> out = new ArrayList<>();
-        for (String p : parts) {
-            out.add(parseIntStrict(p));
-        }
-        return out;
-    }
-
-    private static void validateRangeAndDup(List<Integer> nums) {
-        Set<Integer> set = new HashSet<>(nums);
-        if (set.size() != nums.size()) {
-            throw new IllegalArgumentException("[ERROR] 중복 없는 번호를 입력해 주세요.");
-        }
-        for (int n : nums) {
-            validateRange(n);
-        }
-    }
-
-    private static void validateRange(int n) {
-        if (n < 1 || n > 45) {
-            throw new IllegalArgumentException("[ERROR] 로또 번호는 1부터 45 사이의 숫자여야 합니다.");
-        }
-    }
-
-    private int readBonusNumber(List<Integer> winning) {
-        System.out.println("\n보너스 번호를 입력해 주세요.");
-        while (true) {
-            try {
-                String s = Console.readLine();
-                int n = parseIntStrict(s);
-                validateRange(n);
-                if (winning.contains(n)) {
-                    throw new IllegalArgumentException("[ERROR] 보너스 번호는 당첨 번호와 중복될 수 없습니다.");
-                }
-                return n;
-            } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
-            }
-        }
     }
 }
