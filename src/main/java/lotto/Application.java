@@ -25,6 +25,9 @@ public class Application {
 
         System.out.println();
         List<Integer> winning = readWinningNumbers();
+
+        System.out.println();
+        int bonus = readBonusNumber(winning);
     }
 
     private int readPurchaseAmount() {
@@ -100,5 +103,20 @@ public class Application {
         }
     }
 
-
+    private int readBonusNumber(List<Integer> winning) {
+        System.out.println("보너스 번호를 입력해 주세요.");
+        while (true) {
+            try {
+                String s = Console.readLine();
+                int n = parseIntStrict(s);
+                validateRange(n);
+                if (winning.contains(n)) {
+                    throw new IllegalArgumentException("[ERROR] 보너스 번호는 당첨 번호와 중복될 수 없습니다.");
+                }
+                return n;
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
 }

@@ -103,6 +103,17 @@ class ApplicationTest extends NsTest {
         );
     }
 
+    @Test
+    @DisplayName("보너스 번호가 당첨 번호와 중복이면 재입력 유도")
+    void 보너스_중복_예외_후_재입력() {
+        assertRandomUniqueNumbersInRangeTest(
+            () -> {
+                run("1000", "1,2,3,4,5,6", "6", "7");
+                assertThat(output()).contains(ERROR_MESSAGE);
+            },
+            List.of(21, 22, 23, 24, 25, 26)
+        );
+    }
 
     @Override
     public void runMain() {
