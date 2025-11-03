@@ -9,7 +9,7 @@ import java.util.Set;
 
 public class LottoGame {
 
-    public List<Lotto> buy(int ticketCount) {
+    public List<Lotto> generateRandomLotto(final int ticketCount) {
         List<Lotto> tickets = new ArrayList<>(ticketCount);
         for (int i = 0; i < ticketCount; i++) {
             tickets.add(LottoGenerator.generate());
@@ -17,7 +17,7 @@ public class LottoGame {
         return tickets;
     }
 
-    public JudgeResult judge(List<Lotto> tickets, List<Integer> winning, int bonus) {
+    public JudgeResult judge(List<Lotto> tickets, List<Integer> winning, final int bonus) {
         Map<Rank, Integer> counts = initCounts();
         Set<Integer> winSet = new HashSet<>(winning);
 
@@ -33,10 +33,10 @@ public class LottoGame {
     }
 
     private Map<Rank, Integer> initCounts() {
-        Map<Rank, Integer> m = new EnumMap<>(Rank.class);
+        Map<Rank, Integer> rankCount = new EnumMap<>(Rank.class);
         for (Rank r : Rank.values()) {
-            m.put(r, 0);
+            rankCount.put(r, 0);
         }
-        return m;
+        return rankCount;
     }
 }

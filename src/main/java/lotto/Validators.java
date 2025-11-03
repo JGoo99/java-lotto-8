@@ -1,10 +1,12 @@
 package lotto;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public final class Validators {
+    public static final int MIN_LOTTO_NUMBER = 1;
+    public static final int MAX_LOTTO_NUMBER = 45;
+    public static final int LOTTO_SIZE = 6;
+
     private Validators() {
     }
 
@@ -18,13 +20,11 @@ public final class Validators {
     }
 
     public static void validateWinningNumbers(List<Integer> nums) {
-        if (nums.size() != 6) {
+        if (nums.size() != LOTTO_SIZE) {
             throw new IllegalArgumentException("[ERROR] 당첨 번호는 6개여야 합니다.");
         }
         validateDistinct(nums);
-        for (int n : nums) {
-            validateRange(n);
-        }
+        nums.forEach(Validators::validateRange);
     }
 
     public static void validateBonusDistinct(List<Integer> winning, int bonus) {
@@ -34,14 +34,13 @@ public final class Validators {
     }
 
     public static void validateDistinct(List<Integer> nums) {
-        Set<Integer> set = new HashSet<>(nums);
-        if (set.size() != nums.size()) {
+        if (nums.stream().distinct().count() != nums.size()) {
             throw new IllegalArgumentException("[ERROR] 중복 없는 번호를 입력해 주세요.");
         }
     }
 
     public static void validateRange(int n) {
-        if (n < 1 || n > 45) {
+        if (n < MIN_LOTTO_NUMBER || n > MAX_LOTTO_NUMBER) {
             throw new IllegalArgumentException("[ERROR] 로또 번호는 1부터 45 사이의 숫자여야 합니다.");
         }
     }

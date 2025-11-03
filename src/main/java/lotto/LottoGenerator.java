@@ -6,7 +6,8 @@ import java.util.stream.Collectors;
 
 public class LottoGenerator {
     public static Lotto generate() {
-        List<Integer> nums = Randoms.pickUniqueNumbersInRange(1, 45, 6)
+        List<Integer> nums = Randoms.pickUniqueNumbersInRange(
+                Validators.MIN_LOTTO_NUMBER, Validators.MAX_LOTTO_NUMBER, Validators.LOTTO_SIZE)
             .stream().sorted().collect(Collectors.toList());
         return new Lotto(nums);
     }
